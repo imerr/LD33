@@ -19,5 +19,34 @@
     "shapes": [
       {"type": "box", "width": 27, "height": 57, "mask": 2}
     ]
-  }
+  },
+  "children": [
+    {
+      "type": "particlesystem",
+      "particleCount": 60,
+      "active": false,
+      "identifier": "death",
+      "origin": "center",
+      "particleConfig": {
+        "type": "sprite",
+        "size": [20,20],
+        "origin": "center",
+        "sprite": {
+          "texture": "assets/images/blood.png"
+        },
+        "body": {
+          "type": "dynamic",
+          "bullet": true,
+          "shapes": [
+            {"type": "circle", "radius": 1, "category": 4, "mask": 65535}
+          ]
+        }
+      },
+      "minVelocity": [-100,-100,-100],
+      "maxVelocity": [100,100,100],
+      "angle": 0,
+      "spread": 360,
+      "burst": true
+    }
+  ]
 }

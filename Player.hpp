@@ -26,8 +26,10 @@ public:
 	};
 
 protected:
-	float m_jumpCooldown;
+	float m_lungeCooldown;
 	engine::util::EventHandler<const sf::Event::KeyEvent&>* m_keyHandler;
+	float m_maxEnergy;
+	float m_energy;
 public:
 	Player(engine::Scene *);
 
@@ -35,7 +37,8 @@ public:
 
 	virtual uint8_t GetType() const;
 
-	void OnHitAnimal();
+	void OnHitAnimal(float energy);
+	void ChangeEnergy(float energy);
 
 protected:
 	virtual void OnUpdate(sf::Time delta);

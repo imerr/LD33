@@ -43,12 +43,17 @@
     {
       "type": "text",
       "identifier": "score",
-      "position": [850, 20],
+      "position": [850, 536],
       "text": {
         "font": "assets/lcd_solid.ttf",
         "size": 20,
         "text": "Score: 0"
       }
+    },
+    {
+      "position": [20, 536],
+      "identifier": "energy",
+      "childData": "assets/scripts/energybar.json"
     }
   ],
   "objects": [

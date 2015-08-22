@@ -1,0 +1,19 @@
+{
+  "type": "bar",
+  "size": [240, 24],
+  "sprite": {
+    "texture": "assets/images/energybar.png",
+    "rect": [0, 0, 80, 8]
+  },
+  "children": [
+    {
+      "type": "sprite",
+      "size": [240, 24],
+      "identifier": "full",
+      "sprite": {
+        "texture": "assets/images/energybar.png",
+        "rect": [0, 8, 80, 8]
+      }
+    }
+  ]
+}

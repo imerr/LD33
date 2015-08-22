@@ -5,6 +5,7 @@
 #ifndef LD33_ANIMAL_HPP
 #define LD33_ANIMAL_HPP
 
+#include <stdint.h>
 #include <Engine/SpriteNode.hpp>
 
 class Animal: public engine::SpriteNode {
@@ -16,14 +17,21 @@ class Animal: public engine::SpriteNode {
 	};
 protected:
 	ContactHandler m_contactHandler;
+	uint32_t m_points;
+	float m_energy;
 public:
 	Animal(engine::Scene*);
 	virtual ~Animal();
 	virtual uint8_t GetType() const;
+	virtual bool initialize(Json::Value& root);
+	float GetEnergy() {
+		return m_energy;
+	}
 
 protected:
 	virtual void OnUpdate(sf::Time interval);
 
+	void OnKill();
 };
 
 
