@@ -31,9 +31,19 @@
   },
   "children": [
     {
+      "type": "sprite",
+      "identifier": "guide",
+      "origin": [190, 235],
+      "size": [400, 480],
+      "sprite": {
+        "texture": "assets/images/guide.png"
+      }
+    },
+    {
       "type": "particlesystem",
       "particleCount": 60,
       "origin": "center",
+      "identifier": "smoketrail",
       "particleConfig": {
         "type": "sprite",
         "size": [35,35],
@@ -54,6 +64,33 @@
       "angle": 0,
       "spread": 0,
       "rate": 15
+    },{
+      "type": "particlesystem",
+      "particleCount": 200,
+      "active": false,
+      "origin": "center",
+      "identifier": "death",
+      "particleConfig": {
+        "type": "sprite",
+        "size": [35,35],
+        "origin": "center",
+        "sprite": {
+          "texture": "assets/images/smoke.png"
+        },
+        "body": {
+          "type": "dynamic",
+          "bullet": true,
+          "shapes": [
+            {"type": "circle", "radius": 1, "category": 4, "mask": 65535}
+          ]
+        }
+      },
+      "minVelocity": [-300,-300,-100],
+      "maxVelocity": [300,300,100],
+      "angle": 0,
+      "spread": 360,
+      "load": true,
+      "burst": true
     }
   ]
 }

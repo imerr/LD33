@@ -12,8 +12,8 @@
 class Player : public engine::SpriteNode {
 public:
 	struct AABBAngle : public b2QueryCallback {
-		AABBAngle(b2Vec2 referencePos, float min, float max) : refPos(referencePos), closest(nullptr),
-													  dist(std::numeric_limits<float>::infinity()) {
+		AABBAngle(b2Vec2 referencePos, float min, float max, const Node* ignore) : refPos(referencePos), closest(nullptr),
+													  dist(std::numeric_limits<float>::infinity()), ignore(ignore) {
 			angle[0] = min;
 			angle[1] = max;
 		}
@@ -21,15 +21,21 @@ public:
 		float angle[3];
 		engine::Node *closest;
 		float dist;
+		const engine::Node* ignore;
 
 		bool ReportFixture(b2Fixture *f);
 	};
+
+	void OnHit();
 
 protected:
 	float m_lungeCooldown;
 	engine::util::EventHandler<const sf::Event::KeyEvent&>* m_keyHandler;
 	float m_maxEnergy;
 	float m_energy;
+	bool m_dead;
+	const engine::Node* m_prevTarget;
+	uint32_t m_kills;
 public:
 	Player(engine::Scene *);
 
@@ -42,6 +48,7 @@ public:
 
 protected:
 	virtual void OnUpdate(sf::Time delta);
+
 };
 
 

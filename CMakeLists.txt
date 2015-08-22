@@ -47,7 +47,16 @@ else ()
     endif ()
 endif ()
 set(SOURCE_FILES main.cpp
-        LD33.cpp LD33.hpp Level.cpp Level.hpp ScrollingBg.cpp ScrollingBg.hpp Player.cpp Player.hpp Animal.cpp Animal.hpp misc.hpp Bar.hpp Bar.cpp)
+        LD33.cpp LD33.hpp
+        Level.cpp Level.hpp
+        ScrollingBg.cpp ScrollingBg.hpp
+        Player.cpp Player.hpp
+        Animal.cpp Animal.hpp
+        misc.hpp
+        Bar.hpp Bar.cpp
+        Object.cpp Object.hpp
+        PowerUp.cpp PowerUp.hpp
+)
 add_executable(LD33 ${SOURCE_FILES})
 
 target_link_libraries(LD33 Engine)

@@ -5,18 +5,10 @@
   "children": [
     {
       "type": "scrollingbg",
-      "size": [1024, 1200],
+      "size": [1024, 2400],
       "sprite": {
         "texture": "assets/images/level.png"
       }
-    },
-    {
-      "position": [512, 288],
-      "childData": "assets/scripts/monster.json"
-    },
-    {
-      "position": [200, 288],
-      "childData": "assets/scripts/sheep.json"
     },
     {
       "body": {
@@ -37,6 +29,13 @@
           }
         ]
       }
+    },
+    {
+      "identifier": "objects"
+    },
+    {
+      "position": [512, 288],
+      "childData": "assets/scripts/monster.json"
     }
   ],
   "ui": [
@@ -54,9 +53,44 @@
       "position": [20, 536],
       "identifier": "energy",
       "childData": "assets/scripts/energybar.json"
+    },
+    {
+      "identifier":"over",
+      "active": false,
+      "children": [
+        {
+          "type":"text",
+          "position": [512, 288],
+          "origin": "center",
+          "text": {
+            "font": "assets/lcd_solid.ttf",
+            "size": 50,
+            "align": "center",
+            "text": "Game Over :(",
+            "color": [185, 33, 47]
+          }
+        },
+        {
+          "type":"text",
+          "position": [512, 338],
+          "origin": "center",
+          "text": {
+            "font": "assets/lcd_solid.ttf",
+            "size": 30,
+            "align": "center",
+            "text": "Press up & down to restart"
+          }
+        }
+      ]
     }
   ],
   "objects": [
-    [0.5, "assets/scripts/sheep.json"]
+    [0.15, "assets/scripts/sheep_white.json"],
+    [0.15, "assets/scripts/sheep_brown.json"],
+    [0.1, "assets/scripts/sheep_black.json"],
+    [0.01, "assets/scripts/sheep_rainbow.json"],
+    [0.1, "assets/scripts/obj_treestump.json"],
+    [0.003, "assets/scripts/powerup_rainbow.json"],
+    [0.006, "assets/scripts/powerup_speed.json"]
   ]
 }

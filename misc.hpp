@@ -9,6 +9,7 @@
 
 enum LD33Types {
 	NT_PLAYER = engine::NT_END,
+	NT_OBJECT,
 	NT_ANIMAL,
 };
 #endif //LD33_MISC_HPP

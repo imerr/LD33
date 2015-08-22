@@ -1,15 +1,9 @@
 {
-  "type": "animal",
-  "size": [27, 57],
-  "origin": "center",
+  "type": "object",
+  "size": [34, 30],
   "sprite": {
-    "sheet": "assets/scripts/sheet_animals.json",
-    "animations": {
-      "default": {
-        "frames": [0,1,2,3,4,5,6,7,8],
-        "speed": 0.2
-      }
-    }
+    "sheet": "assets/scripts/sheet_objects.json",
+    "index": 12
   },
   "body": {
     "type": "dynamic",
@@ -17,13 +11,18 @@
     "gravityScale": 0,
     "bullet": true,
     "shapes": [
-      {"type": "box", "width": 27, "height": 57, "mask": 2}
+      {
+        "type": "box",
+        "width": 34,
+        "height": 30,
+        "mask": 2
+      }
     ]
   },
   "children": [
     {
       "type": "particlesystem",
-      "particleCount": 60,
+      "particleCount": 30,
       "active": false,
       "identifier": "death",
       "origin": "center",
@@ -32,7 +31,7 @@
         "size": [20,20],
         "origin": "center",
         "sprite": {
-          "texture": "assets/images/blood.png"
+          "texture": "assets/images/wood.png"
         },
         "body": {
           "type": "dynamic",
@@ -42,8 +41,8 @@
           ]
         }
       },
-      "minVelocity": [-100,-100,-100],
-      "maxVelocity": [100,100,100],
+      "minVelocity": [-20,-20,-100],
+      "maxVelocity": [20,20,100],
       "angle": 0,
       "spread": 360,
       "burst": true

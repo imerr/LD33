@@ -1,5 +1,5 @@
 {
-  "texture": "assets/images/animals.png",
+  "texture": "assets/images/objects.png",
   "sprites": [
     // 0-8 rainbow
     [0, 0, 9, 19],
@@ -14,6 +14,12 @@
     // 9-11 normal sheep
     [0, 19, 9, 19],
     [9, 19, 9, 19],
-    [18, 19, 9, 19]
+    [18, 19, 9, 19],
+    // 12 tree stump
+    [0, 38, 17, 15],
+    // 13 powerup rainbow
+    [17, 38, 14, 13],
+    // 14 speed powerup
+    [31, 38, 15, 13]
   ]
 }

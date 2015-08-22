@@ -6,12 +6,18 @@
 #include "Player.hpp"
 #include "misc.hpp"
 #include "Bar.hpp"
+#include "Level.hpp"
 #include <Engine/Scene.hpp>
 #include <iostream>
 #include <Engine/Game.hpp>
+#include <Engine/ParticleSystem.hpp>
 
-Player::Player(engine::Scene *scene) : SpriteNode(scene), m_lungeCooldown(0), m_maxEnergy(1000), m_energy(500) {
+Player::Player(engine::Scene *scene) : SpriteNode(scene), m_lungeCooldown(0), m_maxEnergy(1000), m_energy(1000),
+									   m_dead(false), m_kills(0), m_prevTarget(nullptr) {
 	m_keyHandler = m_scene->GetGame()->OnKeyDown.AddHandler([this](const sf::Event::KeyEvent &e) {
+		if (!m_render) {
+			return;
+		}
 		float speed = 10;
 		if (m_lungeCooldown < 0) {
 			b2AABB aabb;
@@ -52,9 +58,10 @@ Player::Player(engine::Scene *scene) : SpriteNode(scene), m_lungeCooldown(0), m_
 			}
 			bool found = false;
 			if (query) {
-				AABBAngle q(m_body->GetPosition(), angle[0], angle[1]);
+				AABBAngle q(m_body->GetPosition(), angle[0], angle[1], m_prevTarget);
 				m_scene->GetWorld()->QueryAABB(&q, aabb);
 				if (q.closest) {
+					m_prevTarget = q.closest;
 					found = true;
 					b2Vec2 delta = q.closest->GetBody()->GetPosition() - m_body->GetPosition();
 					delta.Normalize();
@@ -74,18 +81,22 @@ Player::Player(engine::Scene *scene) : SpriteNode(scene), m_lungeCooldown(0), m_
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 					m_body->ApplyLinearImpulse(b2Vec2(0, -speed), gpos, true);
 					m_lungeCooldown = 0.7f;
+					ChangeEnergy(-50.0f);
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 					m_body->ApplyLinearImpulse(b2Vec2(0, speed), gpos, true);
 					m_lungeCooldown = 0.7f;
+					ChangeEnergy(-50.0f);
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 					m_body->ApplyLinearImpulse(b2Vec2(-speed, 0), gpos, true);
 					m_lungeCooldown = 0.7f;
+					ChangeEnergy(-50.0f);
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 					m_body->ApplyLinearImpulse(b2Vec2(speed, 0), gpos, true);
 					m_lungeCooldown = 0.7f;
+					ChangeEnergy(-50.0f);
 				}
 			}
 		}
@@ -97,6 +108,13 @@ Player::~Player() {
 }
 
 void Player::OnUpdate(sf::Time delta_) {
+	if (!m_render) {
+		return;
+	}
+	if (m_dead) {
+		m_body->SetActive(false);
+		SetRender(false);
+	}
 	float delta = delta_.asSeconds();
 	auto gpos_ = GetGlobalPosition();
 	float speed = 6 * delta;
@@ -124,8 +142,11 @@ uint8_t Player::GetType() const {
 
 void Player::OnHitAnimal(float energy) {
 	ChangeEnergy(energy);
-	m_body->SetLinearVelocity(m_body->GetLinearVelocity() * 0.1f);
 	m_lungeCooldown = 0;
+	m_kills++;
+	if (m_kills == 2) {
+		GetChildByID("guide")->Delete();
+	}
 }
 
 bool Player::AABBAngle::ReportFixture(b2Fixture *f) {
@@ -133,7 +154,7 @@ bool Player::AABBAngle::ReportFixture(b2Fixture *f) {
 	float d = b2Distance(b->GetPosition(), refPos);
 	engine::Node *n = static_cast<engine::Node *>(b->GetUserData());
 	// Dont want the walls, or smoke particles, or already killed ones
-	if (n->GetType() < engine::NT_END || n->GetType() == NT_PLAYER || !n->IsRender()) {
+	if (n->GetType() < engine::NT_END || n->GetType() == NT_PLAYER || !n->IsRender() || n == ignore) {
 		return true;
 	}
 	if (d < dist) {
@@ -150,6 +171,18 @@ bool Player::AABBAngle::ReportFixture(b2Fixture *f) {
 void Player::ChangeEnergy(float energy) {
 	m_energy += energy;
 	m_energy = std::min(m_energy, m_maxEnergy);
-	Bar* bar = static_cast<Bar*>(m_scene->GetUi()->GetChildByID("energy"));
-	bar->SetPct(m_energy/m_maxEnergy);
+	Bar *bar = static_cast<Bar *>(m_scene->GetUi()->GetChildByID("energy"));
+	bar->SetPct(m_energy / m_maxEnergy);
+	if (m_energy < 0) {
+		static_cast<Level *>(m_scene)->GameOver();
+		m_dead = true;
+		engine::ParticleSystem* trail = static_cast<engine::ParticleSystem*>(GetChildByID("smoketrail"));
+		trail->SetActive(false);
+		engine::ParticleSystem* death = static_cast<engine::ParticleSystem*>(GetChildByID("death"));
+		death->SetActive(true);
+	}
+}
+
+void Player::OnHit() {
+	m_body->SetLinearVelocity(m_body->GetLinearVelocity() * 0.1f);
 }
