@@ -1,0 +1,59 @@
+{
+  "type": "player",
+  "size": [30, 30],
+  "origin": "center",
+  "sprite": {
+    "sheet": {
+      "texture": "assets/images/monster.png",
+      "sprites": [
+        [0, 0, 10, 10],
+        [10, 0, 10, 10],
+        [20, 0, 10, 10],
+        [30, 0, 10, 10]
+      ]
+    },
+    "animations": {
+      "default": {
+        "frames": [0,1,2,3],
+        "speed": 0.2
+      }
+    }
+  },
+  "body": {
+    "type": "dynamic",
+    "fixedRotation": true,
+    "linearDamping": 2,
+    "gravityScale": 0.2,
+    "bullet": true,
+    "shapes": [
+      {"type": "circle", "radius": 27}
+    ]
+  },
+  "children": [
+    {
+      "type": "particlesystem",
+      "particleCount": 60,
+      "origin": "center",
+      "particleConfig": {
+        "type": "sprite",
+        "size": [35,35],
+        "origin": "center",
+        "sprite": {
+          "texture": "assets/images/smoke.png"
+        },
+        "body": {
+          "type": "dynamic",
+          "bullet": true,
+          "shapes": [
+            {"type": "circle", "radius": 1, "category": 4, "mask": 65535}
+          ]
+        }
+      },
+      "minVelocity": [-20,-20,-100],
+      "maxVelocity": [20,20,100],
+      "angle": 0,
+      "spread": 0,
+      "rate": 15
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "type": "animal",
+  "size": [27, 57],
+  "origin": "center",
+  "sprite": {
+    "sheet": "assets/scripts/sheet_animals.json",
+    "animations": {
+      "default": {
+        "frames": [0,1,2,3,4,5,6,7,8],
+        "speed": 0.2
+      }
+    }
+  },
+  "body": {
+    "type": "dynamic",
+    "fixedRotation": true,
+    "gravityScale": 0,
+    "bullet": true,
+    "shapes": [
+      {"type": "box", "width": 27, "height": 57, "mask": 2}
+    ]
+  }
+}
