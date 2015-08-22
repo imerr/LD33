@@ -85,9 +85,10 @@
     }
   ],
   "objects": [
-    [0.15, "assets/scripts/sheep_white.json"],
-    [0.15, "assets/scripts/sheep_brown.json"],
-    [0.1, "assets/scripts/sheep_black.json"],
+    [0.07, "assets/scripts/sheep_white.json"],
+    [0.07, "assets/scripts/sheep_brown.json"],
+    [0.07, "assets/scripts/sheep_black.json"],
+    [0.07, "assets/scripts/cow.json"],
     [0.01, "assets/scripts/sheep_rainbow.json"],
     [0.1, "assets/scripts/obj_treestump.json"],
     [0.003, "assets/scripts/powerup_rainbow.json"],

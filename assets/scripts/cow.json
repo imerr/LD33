@@ -1,0 +1,23 @@
+{
+  "type": "animal",
+  "size": [27, 57],
+  "origin": "center",
+  "sprite": {
+    "sheet": "assets/scripts/sheet_objects.json",
+    "index": 15
+  },
+  "body": {
+    "type": "dynamic",
+    "fixedRotation": true,
+    "gravityScale": 0,
+    "bullet": true,
+    "shapes": [
+      {"type": "box", "width": 27, "height": 57, "mask": 2}
+    ]
+  },
+  "children": [
+    {
+      "childData": "assets/scripts/bloodsplosion.json"
+    }
+  ]
+}
