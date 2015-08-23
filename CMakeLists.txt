@@ -60,3 +60,9 @@ set(SOURCE_FILES main.cpp
 add_executable(LD33 ${SOURCE_FILES})
 
 target_link_libraries(LD33 Engine)
+if (WIN32)
+    set_target_properties(LD33 PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE")
+    set_target_properties(LD33 PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:CONSOLE")
+    set_target_properties(LD33 PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+    set_target_properties(LD33 PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
+endif()
