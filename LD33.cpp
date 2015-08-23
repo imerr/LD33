@@ -8,7 +8,7 @@
 
 LD33::LD33() {
 	//m_window.setVerticalSyncEnabled(true);
-	m_windowTitle = "LD33 - Title tbd";
+	m_windowTitle = "LD33 - A Peaceful Farm Stroll";
 	m_scene = engine::Factory::create<Level>("assets/scripts/level.json", this);
 }
 
