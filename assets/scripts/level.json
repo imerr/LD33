@@ -50,6 +50,15 @@
       }
     },
     {
+      "type": "text",
+      "position": [300, 545],
+      "text": {
+        "font": "assets/lcd_solid.ttf",
+        "size": 13,
+        "text": "Press M to kill the music"
+      }
+    },
+    {
       "position": [20, 536],
       "identifier": "energy",
       "childData": "assets/scripts/energybar.json"
@@ -82,6 +91,15 @@
           }
         }
       ]
+    },
+    {
+      "type": "sprite",
+      "identifier": "paused",
+      "active": false,
+      "size": [1024, 576],
+      "sprite": {
+        "texture": "assets/images/paused.png"
+      }
     }
   ],
   "objects": [

@@ -9,16 +9,34 @@
 #include "Level.hpp"
 #include "PowerUp.hpp"
 #include <Engine/Game.hpp>
+#include <Engine/ResourceManager.hpp>
 #include "Player.hpp"
 
 Level::Level(engine::Game *game) : Scene(game), m_spawnTimer(2), m_score(0), m_over(false), m_objectNode(nullptr),
 								   m_rainbowTime(0), m_speed(false), m_speedTime(0.0), m_healthTime(0.0),
-								   m_doubleTime(0.0) {
-
+								   m_doubleTime(0.0), m_paused(false) {
+	m_backgroundMusic = engine::ResourceManager::instance()->MakeSound(
+		"assets/sound/amazingmusicthebestthingyouwilleverhear.wav");
+	m_backgroundMusic->setLoop(true);
+	m_backgroundMusic->play();
+	m_keyDown = m_game->OnKeyDown.AddHandler([this](const sf::Event::KeyEvent &e) {
+		if (e.code == sf::Keyboard::M) {
+			if (m_backgroundMusic->getStatus() == sf::Sound::Playing) {
+				m_backgroundMusic->stop();
+			} else {
+				m_backgroundMusic->play();
+			}
+		}
+	});
+	m_powerUpSound = engine::ResourceManager::instance()->MakeSound("assets/sound/powerup.wav");
+	m_gameoverSound = engine::ResourceManager::instance()->MakeSound("assets/sound/gameover.wav");
 }
 
 Level::~Level() {
-
+	delete m_backgroundMusic;
+	delete m_powerUpSound;
+	delete m_gameoverSound;
+	m_game->OnKeyDown.RemoveHandler(m_keyDown);
 }
 
 bool Level::initialize(Json::Value &root) {
@@ -42,15 +60,14 @@ void Level::OnUpdate(sf::Time interval) {
 	}
 	engine::util::RandomFloat xpos(0, m_size.x);
 	engine::util::RandomFloat rotation(0, 360);
-	if (!m_objectNode) {
-		m_objectNode = GetChildByID("objects");
-	}
 	engine::Scene::OnUpdate(interval);
-	m_spawnTimer -= interval.asSeconds();
-	m_rainbowTime -= interval.asSeconds();
-	m_doubleTime -= interval.asSeconds();
-	m_speedTime -= interval.asSeconds();
-	m_healthTime -= interval.asSeconds();
+	float delta = interval.asSeconds();
+	m_spawnTimer -= delta;
+	m_rainbowTime -= delta;
+	m_doubleTime -= delta;
+	m_speedTime -= delta;
+	m_healthTime -= delta;
+	m_scoreAdd -= delta;
 	if (m_speedTime > 0 && !m_speed) {
 		m_speed = true;
 		m_world->SetGravity(b2Vec2(0.0, 6.0));
@@ -66,7 +83,7 @@ void Level::OnUpdate(sf::Time interval) {
 			o->SetRotation(rotation());
 		} else {
 			m_spawnTimer = 0.5;
-			if (m_speed) m_spawnTimer /= 2;
+			if (m_speed) m_spawnTimer /= 4;
 			if (m_doubleTime > 0) m_spawnTimer /= 2;
 			engine::util::RandomFloat chance(0.0, 1.0);
 
@@ -87,6 +104,10 @@ void Level::OnUpdate(sf::Time interval) {
 			player->ChangeEnergy(1.5f);
 		}
 	}
+	if (m_scoreAdd < 0) {
+		AddScore(1);
+		m_scoreAdd = 0.5;
+	}
 }
 
 void Level::AddScore(uint32_t score) {
@@ -98,11 +119,13 @@ void Level::AddScore(uint32_t score) {
 }
 
 void Level::GameOver() {
+	m_gameoverSound->play();
 	m_ui->GetChildByID("over")->SetActive(true);
 	m_over = true;
 }
 
 void Level::PowerUp(uint8_t type) {
+	m_powerUpSound->play();
 	switch (type) {
 		case PU_RAINBOWS:
 			m_rainbowTime = 10.0f;
@@ -120,4 +143,24 @@ void Level::PowerUp(uint8_t type) {
 		default:
 			break;
 	}
+}
+
+void Level::update(sf::Time interval) {
+	if (!m_game->IsFocus() && !m_paused) {
+		m_paused = true;
+		GetUi()->GetChildByID("paused")->SetActive(true);
+	}
+	if (m_paused) {
+		m_ui->update(interval);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			m_paused = false;
+			GetUi()->GetChildByID("paused")->SetActive(false);
+		}
+	} else {
+		engine::Scene::update(interval);
+	}
+}
+
+void Level::OnInitializeDone() {
+	m_objectNode = GetChildByID("objects");
 }

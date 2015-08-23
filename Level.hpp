@@ -7,6 +7,7 @@
 
 
 #include <Engine/Scene.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 class Level: public engine::Scene {
 public:
@@ -31,12 +32,22 @@ protected:
 	float m_speedTime;
 	float m_healthTime;
 	float m_doubleTime;
+	bool m_paused;
+	sf::Sound* m_backgroundMusic;
+	sf::Sound *m_powerUpSound;
+	sf::Sound *m_gameoverSound;
+	engine::util::EventHandler<const sf::Event::KeyEvent&>* m_keyDown;
+	float m_scoreAdd;
 public:
 	Level(engine::Game * game);
 	~Level();
 	virtual bool initialize(Json::Value& root);
 	void AddScore(uint32_t score);
-
+	virtual void update(sf::Time interval);
+	virtual void OnInitializeDone();
+	bool IsPaused() {
+		return m_paused;
+	}
 protected:
 	virtual void OnUpdate(sf::Time interval);
 

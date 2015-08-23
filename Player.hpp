@@ -8,6 +8,7 @@
 #include <Engine/SpriteNode.hpp>
 #include <limits>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 class Player : public engine::SpriteNode {
 public:
@@ -36,6 +37,8 @@ protected:
 	bool m_dead;
 	const engine::Node* m_prevTarget;
 	uint32_t m_kills;
+	sf::Sound* m_lungeSound;
+	sf::Sound *m_nomSound;
 public:
 	Player(engine::Scene *);
 
