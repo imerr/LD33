@@ -104,7 +104,7 @@ void Level::OnUpdate(sf::Time interval) {
 			player->ChangeEnergy(1.5f);
 		}
 	}
-	if (m_scoreAdd < 0) {
+	if (m_scoreAdd < 0 && !m_over) {
 		AddScore(1);
 		m_scoreAdd = 0.5;
 	}
