@@ -89,7 +89,6 @@ void Level::GameOver() {
 }
 
 void Level::PowerUp(uint8_t type) {
-	std::cout << "POWERUP! YAAY" << type << std::endl;
 	switch (type) {
 		case PU_RAINBOWS:
 			m_rainbowTime = 10.0f;

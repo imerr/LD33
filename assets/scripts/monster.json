@@ -31,15 +31,6 @@
   },
   "children": [
     {
-      "type": "sprite",
-      "identifier": "guide",
-      "origin": [190, 235],
-      "size": [400, 480],
-      "sprite": {
-        "texture": "assets/images/guide.png"
-      }
-    },
-    {
       "type": "particlesystem",
       "particleCount": 60,
       "origin": "center",
@@ -91,6 +82,15 @@
       "spread": 360,
       "load": true,
       "burst": true
+    },
+    {
+      "type": "sprite",
+      "identifier": "guide",
+      "origin": [190, 235],
+      "size": [400, 480],
+      "sprite": {
+        "texture": "assets/images/guide.png"
+      }
     }
   ]
 }
