@@ -40,6 +40,7 @@ protected:
 	float m_scoreAdd;
 	float m_zigzagTime;
 	bool m_zig;
+	engine::Node *m_mouse;
 public:
 	Level(engine::Game * game);
 	~Level();

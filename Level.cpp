@@ -14,7 +14,7 @@
 
 Level::Level(engine::Game *game) : Scene(game), m_spawnTimer(2), m_score(0), m_over(false), m_objectNode(nullptr),
 								   m_rainbowTime(0), m_speed(false), m_speedTime(0.0), m_healthTime(0.0),
-								   m_doubleTime(0.0), m_paused(false), m_zigzagTime(0.0) {
+								   m_doubleTime(0.0), m_paused(false), m_zigzagTime(0.0), m_mouse(nullptr) {
 	m_backgroundMusic = engine::ResourceManager::instance()->MakeSound(
 		"assets/sound/amazingmusicthebestthingyouwilleverhear.wav");
 	m_backgroundMusic->setLoop(true);
@@ -30,6 +30,7 @@ Level::Level(engine::Game *game) : Scene(game), m_spawnTimer(2), m_score(0), m_o
 	});
 	m_powerUpSound = engine::ResourceManager::instance()->MakeSound("assets/sound/powerup.wav");
 	m_gameoverSound = engine::ResourceManager::instance()->MakeSound("assets/sound/gameover.wav");
+	m_game->GetWindow()->setMouseCursorVisible(true);
 }
 
 Level::~Level() {
@@ -112,6 +113,15 @@ void Level::OnUpdate(sf::Time interval) {
 			}
 		}
 	}
+	if (m_mouse) {
+		if (!m_mouse->IsRender()) {
+			m_mouse->GetBody()->SetGravityScale(1);
+			m_game->GetWindow()->setMouseCursorVisible(false);
+			m_mouse = nullptr;
+		} else {
+			m_mouse->SetPosition(m_game->GetMousePosition().x, m_game->GetMousePosition().y);
+		}
+	}
 	if (m_healthTime > 0) {
 		Player *player = static_cast<Player *>(GetChildByID("player"));
 		if (player) {
@@ -180,4 +190,5 @@ void Level::update(sf::Time interval) {
 
 void Level::OnInitializeDone() {
 	m_objectNode = GetChildByID("objects");
+	m_mouse = GetChildByID("mouse");
 }

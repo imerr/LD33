@@ -19,6 +19,7 @@ protected:
 	ContactHandler m_contactHandler;
 	uint32_t m_points;
 	float m_energy;
+	float m_move;
 public:
 	Object(engine::Scene*);
 	virtual ~Object();
@@ -32,6 +33,7 @@ protected:
 	virtual void OnUpdate(sf::Time interval);
 
 	virtual void OnHit(Player* player);
+
 };
 
 

@@ -34,6 +34,9 @@
       "identifier": "objects"
     },
     {
+      "childData": "assets/scripts/mouse.json"
+    },
+    {
       "position": [512, 288],
       "childData": "assets/scripts/monster.json"
     }
@@ -109,7 +112,9 @@
     [0.08, "assets/scripts/cow.json"],
     [0.08, "assets/scripts/pig.json"],
     [0.01, "assets/scripts/sheep_rainbow.json"],
-    [0.1, "assets/scripts/obj_treestump.json"],
+    [0.03, "assets/scripts/obj_treestump.json"],
+    [0.03, "assets/scripts/obj_stone.json"],
+    [0.04, "assets/scripts/obj_flowers.json"],
     [0.003, "assets/scripts/powerup_rainbow.json"],
     [0.006, "assets/scripts/powerup_speed.json"],
     [0.008, "assets/scripts/powerup_health.json"],
