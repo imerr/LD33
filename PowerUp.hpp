@@ -9,6 +9,8 @@
 enum PowerUpTypes {
 	PU_RAINBOWS,
 	PU_SPEED,
+	PU_HEALTH,
+	PU_DOUBLE,
 	PU_END
 };
 class PowerUp: public Object {

@@ -9,9 +9,11 @@
 #include "Level.hpp"
 #include "PowerUp.hpp"
 #include <Engine/Game.hpp>
+#include "Player.hpp"
 
 Level::Level(engine::Game *game) : Scene(game), m_spawnTimer(2), m_score(0), m_over(false), m_objectNode(nullptr),
-								   m_rainbowTime(0), m_speed(false), m_speedTime(0.0) {
+								   m_rainbowTime(0), m_speed(false), m_speedTime(0.0), m_healthTime(0.0),
+								   m_doubleTime(0.0) {
 
 }
 
@@ -46,7 +48,9 @@ void Level::OnUpdate(sf::Time interval) {
 	engine::Scene::OnUpdate(interval);
 	m_spawnTimer -= interval.asSeconds();
 	m_rainbowTime -= interval.asSeconds();
+	m_doubleTime -= interval.asSeconds();
 	m_speedTime -= interval.asSeconds();
+	m_healthTime -= interval.asSeconds();
 	if (m_speedTime > 0 && !m_speed) {
 		m_speed = true;
 		m_world->SetGravity(b2Vec2(0.0, 6.0));
@@ -63,10 +67,13 @@ void Level::OnUpdate(sf::Time interval) {
 		} else {
 			m_spawnTimer = 0.5;
 			if (m_speed) m_spawnTimer /= 2;
+			if (m_doubleTime > 0) m_spawnTimer /= 2;
 			engine::util::RandomFloat chance(0.0, 1.0);
 
 			for (auto &obj: m_objects) {
-				if (chance() < obj.chance) {
+				float c = obj.chance;
+				if (m_doubleTime > 0) c *= 2;
+				if (chance() < c) {
 					engine::Node *o = engine::Factory::CreateChildFromFile(obj.script, m_objectNode);
 					o->SetPosition(xpos(), -200);
 					o->SetRotation(rotation());
@@ -74,9 +81,16 @@ void Level::OnUpdate(sf::Time interval) {
 			}
 		}
 	}
+	if (m_healthTime > 0) {
+		Player *player = static_cast<Player *>(GetChildByID("player"));
+		if (player) {
+			player->ChangeEnergy(1.5f);
+		}
+	}
 }
 
 void Level::AddScore(uint32_t score) {
+	if (m_doubleTime > 0) score *= 2;
 	m_score += score;
 	std::ostringstream ss;
 	ss << "Score: " << m_score;
@@ -97,6 +111,12 @@ void Level::PowerUp(uint8_t type) {
 		case PU_SPEED:
 			m_speedTime = 10.0f;
 			break;
+		case PU_HEALTH:
+			m_healthTime = 5.0f;
+			break;
+		case PU_DOUBLE:
+			m_doubleTime = 10.0f;
+
 		default:
 			break;
 	}

@@ -92,6 +92,8 @@
     [0.01, "assets/scripts/sheep_rainbow.json"],
     [0.1, "assets/scripts/obj_treestump.json"],
     [0.003, "assets/scripts/powerup_rainbow.json"],
-    [0.006, "assets/scripts/powerup_speed.json"]
+    [0.006, "assets/scripts/powerup_speed.json"],
+    [0.008, "assets/scripts/powerup_health.json"],
+    [0.004, "assets/scripts/powerup_double.json"]
   ]
 }

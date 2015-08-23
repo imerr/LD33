@@ -8,7 +8,9 @@
 
 const static char *PowerUpNames[PU_END] = {
 	"rainbow",
-	"speed"
+	"speed",
+	"health",
+	"double",
 };
 
 PowerUp::PowerUp(engine::Scene *scene) : Object(scene) {

@@ -2,6 +2,7 @@
   "type": "player",
   "size": [30, 30],
   "origin": "center",
+  "identifier": "player",
   "sprite": {
     "sheet": {
       "texture": "assets/images/monster.png",

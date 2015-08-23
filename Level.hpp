@@ -29,6 +29,8 @@ protected:
 	float m_rainbowTime;
 	bool m_speed;
 	float m_speedTime;
+	float m_healthTime;
+	float m_doubleTime;
 public:
 	Level(engine::Game * game);
 	~Level();
