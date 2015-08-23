@@ -11,6 +11,7 @@ enum PowerUpTypes {
 	PU_SPEED,
 	PU_HEALTH,
 	PU_DOUBLE,
+	PU_ZIGZAG,
 	PU_END
 };
 class PowerUp: public Object {

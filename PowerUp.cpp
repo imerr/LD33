@@ -11,6 +11,7 @@ const static char *PowerUpNames[PU_END] = {
 	"speed",
 	"health",
 	"double",
+	"zigzag",
 };
 
 PowerUp::PowerUp(engine::Scene *scene) : Object(scene) {

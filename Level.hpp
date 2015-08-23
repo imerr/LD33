@@ -38,6 +38,8 @@ protected:
 	sf::Sound *m_gameoverSound;
 	engine::util::EventHandler<const sf::Event::KeyEvent&>* m_keyDown;
 	float m_scoreAdd;
+	float m_zigzagTime;
+	bool m_zig;
 public:
 	Level(engine::Game * game);
 	~Level();

@@ -14,7 +14,7 @@
 
 Level::Level(engine::Game *game) : Scene(game), m_spawnTimer(2), m_score(0), m_over(false), m_objectNode(nullptr),
 								   m_rainbowTime(0), m_speed(false), m_speedTime(0.0), m_healthTime(0.0),
-								   m_doubleTime(0.0), m_paused(false) {
+								   m_doubleTime(0.0), m_paused(false), m_zigzagTime(0.0) {
 	m_backgroundMusic = engine::ResourceManager::instance()->MakeSound(
 		"assets/sound/amazingmusicthebestthingyouwilleverhear.wav");
 	m_backgroundMusic->setLoop(true);
@@ -68,6 +68,7 @@ void Level::OnUpdate(sf::Time interval) {
 	m_speedTime -= delta;
 	m_healthTime -= delta;
 	m_scoreAdd -= delta;
+	m_zigzagTime -= delta;
 	if (m_speedTime > 0 && !m_speed) {
 		m_speed = true;
 		m_world->SetGravity(b2Vec2(0.0, 6.0));
@@ -76,16 +77,29 @@ void Level::OnUpdate(sf::Time interval) {
 		m_world->SetGravity(b2Vec2(0.0, 3.0));
 	}
 	if (m_spawnTimer < 0) {
+			engine::util::RandomFloat chance(0.0, 1.0);
 		if (m_rainbowTime > 0) {
 			m_spawnTimer = 0.1;
 			engine::Node *o = engine::Factory::CreateChildFromFile("assets/scripts/sheep_rainbow.json", m_objectNode);
 			o->SetPosition(xpos(), -200);
 			o->SetRotation(rotation());
+		} else if (m_zigzagTime > 0) {
+			m_spawnTimer = 0.3;
+			float c = chance();
+			// MEH
+			engine::Node *o = nullptr;
+			if (c < 0.3) o= engine::Factory::CreateChildFromFile("assets/scripts/cow.json", m_objectNode);
+			else if (c < 0.6) o= engine::Factory::CreateChildFromFile("assets/scripts/pig.json", m_objectNode);
+			else if (c < 0.75) o= engine::Factory::CreateChildFromFile("assets/scripts/sheep_white.json", m_objectNode);
+			else if (c < 0.9) o= engine::Factory::CreateChildFromFile("assets/scripts/sheep_brown.json", m_objectNode);
+			else o= engine::Factory::CreateChildFromFile("assets/scripts/sheep_black.json", m_objectNode);
+			o->SetPosition(m_zig?362:662, -200);
+			m_zig = !m_zig;
+			o->SetRotation(rotation());
 		} else {
 			m_spawnTimer = 0.5;
 			if (m_speed) m_spawnTimer /= 4;
 			if (m_doubleTime > 0) m_spawnTimer /= 2;
-			engine::util::RandomFloat chance(0.0, 1.0);
 
 			for (auto &obj: m_objects) {
 				float c = obj.chance;
@@ -139,7 +153,10 @@ void Level::PowerUp(uint8_t type) {
 			break;
 		case PU_DOUBLE:
 			m_doubleTime = 10.0f;
-
+			break;
+		case PU_ZIGZAG:
+			m_zigzagTime = 10.0f;
+			break;
 		default:
 			break;
 	}

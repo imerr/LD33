@@ -39,6 +39,7 @@ protected:
 	uint32_t m_kills;
 	sf::Sound* m_lungeSound;
 	sf::Sound *m_nomSound;
+	float m_lifeTime;
 public:
 	Player(engine::Scene *);
 

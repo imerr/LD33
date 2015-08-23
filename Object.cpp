@@ -9,9 +9,14 @@
 #include <Engine/Scene.hpp>
 #include <Engine/ParticleSystem.hpp>
 #include <iostream>
+#include <Engine/ResourceManager.hpp>
 
+sf::Sound* hitSound = nullptr; // yay amazing code
 Object::Object(engine::Scene *scene) : SpriteNode(scene), m_contactHandler(this) {
 	m_scene->OnContactPreSolve.AddHandler(&m_contactHandler);
+	if (!hitSound) {
+		hitSound = engine::ResourceManager::instance()->MakeSound("assets/sound/hitobject.wav");
+	}
 }
 
 Object::~Object() {
@@ -55,6 +60,9 @@ bool Object::initialize(Json::Value &root) {
 }
 
 void Object::OnHit(Player* player) {
+	if (GetType() == NT_OBJECT) {
+		hitSound->play();
+	}
 	SetRender(false);
 	player->OnHit();
 	engine::Node* death = GetChildByID("death");

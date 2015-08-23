@@ -14,7 +14,7 @@
 #include <Engine/ResourceManager.hpp>
 
 Player::Player(engine::Scene *scene) : SpriteNode(scene), m_lungeCooldown(0), m_maxEnergy(1000), m_energy(1000),
-									   m_dead(false), m_kills(0), m_prevTarget(nullptr) {
+									   m_dead(false), m_prevTarget(nullptr), m_kills(0), m_lifeTime(0.0f) {
 	m_lungeSound = engine::ResourceManager::instance()->MakeSound("assets/sound/lunge2.ogg");
 	m_nomSound = engine::ResourceManager::instance()->MakeSound("assets/sound/crunch.ogg");
 	m_keyHandler = m_scene->GetGame()->OnKeyDown.AddHandler([this](const sf::Event::KeyEvent &e) {
@@ -124,8 +124,10 @@ void Player::OnUpdate(sf::Time delta_) {
 	if (m_dead) {
 		m_body->SetActive(false);
 		SetRender(false);
+		return;
 	}
 	float delta = delta_.asSeconds();
+	m_lifeTime += delta;
 	auto gpos_ = GetGlobalPosition();
 	float speed = 6 * delta;
 	float ratio = m_scene->GetPixelMeterRatio();
@@ -143,7 +145,12 @@ void Player::OnUpdate(sf::Time delta_) {
 		m_body->ApplyLinearImpulse(b2Vec2(speed, 0), gpos, true);
 	}
 	m_lungeCooldown -= delta;
-	ChangeEnergy(-.5f);
+	if (m_lifeTime < 120)
+		ChangeEnergy(-.5f);
+	else if (m_lifeTime < 360)
+		ChangeEnergy(-.6f);
+	else if (m_lifeTime < 600)
+		ChangeEnergy(-.8f);
 }
 
 uint8_t Player::GetType() const {
