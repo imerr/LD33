@@ -19,7 +19,7 @@ Level::Level(engine::Game *game) : Scene(game), m_spawnTimer(2), m_score(0), m_o
 		"assets/sound/amazingmusicthebestthingyouwilleverhear.wav");
 	m_backgroundMusic->setLoop(true);
 	m_backgroundMusic->play();
-	m_keyDown = m_game->OnKeyDown.AddHandler([this](const sf::Event::KeyEvent &e) {
+	m_keyDown = m_game->OnKeyDown.MakeHandler([this](const sf::Event::KeyEvent &e) {
 		if (e.code == sf::Keyboard::M) {
 			if (m_backgroundMusic->getStatus() == sf::Sound::Playing) {
 				m_backgroundMusic->stop();
@@ -119,7 +119,9 @@ void Level::OnUpdate(sf::Time interval) {
 			m_game->GetWindow()->setMouseCursorVisible(false);
 			m_mouse = nullptr;
 		} else {
-			m_mouse->SetPosition(m_game->GetMousePosition().x, m_game->GetMousePosition().y);
+			auto pos = m_game->GetMousePosition();
+			if (pos.y > 576) pos.y = -10;
+			m_mouse->SetPosition(pos.x, pos.y);
 		}
 	}
 	if (m_healthTime > 0) {

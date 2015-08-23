@@ -17,7 +17,7 @@ Player::Player(engine::Scene *scene) : SpriteNode(scene), m_lungeCooldown(0), m_
 									   m_dead(false), m_prevTarget(nullptr), m_kills(0), m_lifeTime(0.0f) {
 	m_lungeSound = engine::ResourceManager::instance()->MakeSound("assets/sound/lunge2.ogg");
 	m_nomSound = engine::ResourceManager::instance()->MakeSound("assets/sound/crunch.ogg");
-	m_keyHandler = m_scene->GetGame()->OnKeyDown.AddHandler([this](const sf::Event::KeyEvent &e) {
+	m_keyHandler = m_scene->GetGame()->OnKeyDown.MakeHandler([this](const sf::Event::KeyEvent &e) {
 		if (!m_render || static_cast<Level*>(m_scene)->IsPaused()) {
 			return;
 		}
